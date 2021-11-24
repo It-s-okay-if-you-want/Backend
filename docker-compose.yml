@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+  server:
+    container_name: app
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    network_mode: bridge
+    build: .
+    environment:
+      PORT: ${PORT}
+
+      MYSQL_DATABASE: ${DB_DB}
+      MYSQL_HOST: ${DB_HOST}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PORT: ${DB_PORT}
+
+      JWT_SECRET: ${JWT_SECRET}
+    
+    volumes:
+      - app-public:/usr/src/app/public
+
+volumes:
+  app-public:
