@@ -21,7 +21,6 @@ export default class Post {
 	})
 	image?: string;
 
-	@ApiProperty()
 	@RelationId((post: Post) => post.user)
 	userId!: string;
 
@@ -32,7 +31,6 @@ export default class Post {
 	})
 	user!: User;
 
-	@ApiProperty()
 	@RelationId((post: Post) => post.category)
 	categoryIdx!: number;
 

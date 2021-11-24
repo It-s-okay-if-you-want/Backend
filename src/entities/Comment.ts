@@ -17,7 +17,6 @@ export default class Comment {
 	})
 	createdAt: Date;
 
-	@ApiProperty()
 	@RelationId((commnet: Comment) => commnet.post)
 	postIdx!: number;
 
@@ -28,7 +27,6 @@ export default class Comment {
 	})
 	post!: Post;
 
-	@ApiProperty()
 	@RelationId((comment: Comment) => comment.user)
 	userId!: string;
 

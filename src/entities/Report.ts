@@ -9,7 +9,6 @@ export default class Report {
 	@PrimaryGeneratedColumn()
 	idx!: number;
 
-	@ApiProperty()
 	@RelationId((report: Report) => report.post)
 	postIdx!: number;
 
@@ -20,7 +19,6 @@ export default class Report {
 	})
 	post!: Post;
 
-	@ApiProperty()
 	@RelationId((report: Report) => report.user)
 	userId!: string;
 

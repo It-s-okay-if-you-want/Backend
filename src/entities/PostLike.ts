@@ -9,7 +9,6 @@ export default class PostLike {
 	@PrimaryGeneratedColumn()
 	idx!: number;
 
-	@ApiProperty()
 	@RelationId((postLike: PostLike) => postLike.post)
 	postIdx!: number;
 
@@ -20,7 +19,6 @@ export default class PostLike {
 	})
 	post!: Post;
 
-	@ApiProperty()
 	@RelationId((postLike: PostLike) => postLike.user)
 	userId!: string;
 

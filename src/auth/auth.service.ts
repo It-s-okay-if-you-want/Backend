@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import User from 'src/entities/User';
 import { Repository } from 'typeorm';
@@ -13,7 +13,13 @@ export class AuthService {
 
 	async register(registerDto: RegisterDto): Promise<void> {
 		const isExistUser = await this.authRepo.findOne({
+			id: registerDto.id
+		});
 
-		})
+		if (isExistUser !== undefined) {
+			throw new ForbiddenException('이미 존재하는 유저');
+		}
+
+		await this.authRepo.save(registerDto);
 	}
 }
