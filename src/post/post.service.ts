@@ -48,7 +48,6 @@ export class PostService {
 
 		const posts: Post[] = await this.postRepo.createQueryBuilder('post')
 			.leftJoin('post.user', 'user')
-			.leftJoinAndSelect('post.postLike', 'like')
 			.where('user.local = :local', { local: userData.local })
 			.orderBy('post.created_at', 'DESC')
 			.getMany();
@@ -56,10 +55,13 @@ export class PostService {
 		return posts;
 	}
 
-	public async getHotPost(): Promise<Post[]> {
+	public async getHotPost(user: User): Promise<Post[]> {
+		const userData: User = await this.userService.getUserById(user.id);
+
 		return this.postRepo.createQueryBuilder('post')
-			.leftJoinAndSelect('post.postLike', 'postlike')
-			.orderBy('COUNT(postlike)', 'DESC')
-			.getMany();
+			.leftJoin('post.user', 'user')
+			.where('user.local = :local', { local: userData.local })
+			.orderBy('post_like', 'DESC')
+			.getRawMany();
 	}
 }

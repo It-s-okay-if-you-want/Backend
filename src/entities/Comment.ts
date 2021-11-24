@@ -6,17 +6,21 @@ import User from "./User";
 @Entity('comment')
 export default class Comment {
 
+	@ApiProperty()
 	@PrimaryGeneratedColumn()
 	idx!: string;
 
+	@ApiProperty()
 	@Column()
 	content!: string;
 
+	@ApiProperty()
 	@CreateDateColumn({
 		name: 'created_at'
 	})
 	createdAt: Date;
 
+	@ApiProperty()
 	@RelationId((commnet: Comment) => commnet.post)
 	postIdx!: number;
 
@@ -27,6 +31,7 @@ export default class Comment {
 	})
 	post!: Post;
 
+	@ApiProperty()
 	@RelationId((comment: Comment) => comment.user)
 	userId!: string;
 

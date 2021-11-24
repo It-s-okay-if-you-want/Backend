@@ -6,9 +6,11 @@ import User from "./User";
 @Entity('report')
 export default class Report {
 
+	@ApiProperty()
 	@PrimaryGeneratedColumn()
 	idx!: number;
 
+	@ApiProperty()
 	@RelationId((report: Report) => report.post)
 	postIdx!: number;
 
@@ -19,6 +21,7 @@ export default class Report {
 	})
 	post!: Post;
 
+	@ApiProperty()
 	@RelationId((report: Report) => report.user)
 	userId!: string;
 
