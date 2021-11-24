@@ -6,6 +6,7 @@ import { Login } from 'src/types/types';
 import { Repository } from 'typeorm';
 import LoginDto from './dto/login.dto';
 import RegisterDto from './dto/register.dto';
+import UserEditDto from './dto/userEdit.dto';
 
 @Injectable()
 export class AuthService {
@@ -37,13 +38,26 @@ export class AuthService {
 			throw new UnauthorizedException('아이디 혹은 비밀번호가 틀렸습니다');
 		}
 
-		const token = this.tokenService.generateToken(user.id);
-		const refreshToken = this.tokenService.generateRefreshToken(user.id);
+		const token: string = this.tokenService.generateToken(user.id);
+		const refreshToken: string = this.tokenService.generateRefreshToken(user.id);
 
 		return {
 			user,
 			token,
 			refreshToken
 		}
+	}
+
+	async userEdit(userEditDto: UserEditDto, user: User) {
+		const userData: User | undefined = await this.authRepo.findOne({
+			id: user.id
+		});
+
+		if (userData === undefined) {
+			throw new UnauthorizedException('존재하지 않는 유저');
+		}
+
+		this.authRepo.merge(userData, userEditDto);
+		await this.authRepo.save(userData);
 	}
 }
