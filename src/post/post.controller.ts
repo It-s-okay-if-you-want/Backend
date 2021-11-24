@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOkResponse } from '@nestjs/swagger';
 import { Token } from 'src/decorator/token.decorator';
 import PostEntity from 'src/entities/Post';
 import User from 'src/entities/User';
@@ -19,6 +19,7 @@ export class PostController {
 	@Post('/')
 	@HttpCode(200)
 	@ApiOkResponse({ type: BaseResponse })
+	@ApiBasicAuth()
 	async CreatePost(@Body() postDto: CreatePostDto, @Token() user: User) {
 		await this.postService.createPost(postDto, user);
 
@@ -29,6 +30,7 @@ export class PostController {
 	@Get('/new')
 	@HttpCode(200)
 	@ApiOkResponse({ type: GetPostsResponse })
+	@ApiBasicAuth()
 	async getNewPost(@Token() user: User) {
 		const posts: PostEntity[] = await this.postService.getNewPost(user);
 
@@ -39,6 +41,7 @@ export class PostController {
 	@Get('/hot')
 	@HttpCode(200)
 	@ApiOkResponse({ type: BaseResponse })
+	@ApiBasicAuth()
 	async getHotPost(@Token() user: User) {
 		const posts: PostEntity[] = await this.postService.getHotPost(user);
 
