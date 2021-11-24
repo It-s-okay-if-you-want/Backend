@@ -11,7 +11,6 @@ export default class Category {
 	@Column()
 	name!: string;
 
-	@ApiProperty()
 	@OneToMany(() => Post, (post) => post.category)
 	post!: Post[];
 }

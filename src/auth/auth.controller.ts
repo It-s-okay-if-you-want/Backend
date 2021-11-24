@@ -1,5 +1,6 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import BaseResponse from 'src/lib/BaseResponse';
 import { AuthService } from './auth.service';
 import RegisterDto from './dto/register.dto';
 
@@ -7,12 +8,15 @@ import RegisterDto from './dto/register.dto';
 @ApiTags('auth')
 export class AuthController {
 	constructor(
-		authService: AuthService,
+		private authService: AuthService,
 	) { }
 
 	@Post('/register')
 	@HttpCode(200)
+	@ApiOkResponse({ type: BaseResponse })
 	async Register(@Body() registerDto: RegisterDto) {
+		await this.authService.register(registerDto);
 
+		return new BaseResponse(200, "회원가입 성공");
 	}
 }
