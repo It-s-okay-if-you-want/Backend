@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Token } from 'src/decorator/token.decorator';
 import User from 'src/entities/User';
 import { AuthGuard } from 'src/guard/AuthGuard';
@@ -39,6 +39,7 @@ export class AuthController {
 	@UseGuards(AuthGuard)
 	@Post('/edit')
 	@ApiOkResponse({ type: BaseResponse })
+	@ApiBasicAuth('authorization')
 	async Edit(@Body() userEditDto: UserEditDto, @Token() user: User) {
 		await this.authService.userEdit(userEditDto, user);
 

@@ -1,26 +1,41 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from "typeorm";
 import User from "./User";
 import Comment from "./Comment";
-import Category from "./Category";
+import PostLike from "./PostLike";
 
 @Entity('post')
 export default class Post {
 
+	@ApiProperty()
 	@PrimaryGeneratedColumn()
 	idx!: number;
 
+	@ApiProperty()
 	@Column()
 	title!: string;
 
+	@ApiProperty()
 	@Column()
 	content!: string;
 
+	@ApiProperty()
 	@Column({
 		nullable: true,
 	})
 	image?: string;
 
+	@ApiProperty()
+	@Column()
+	category!: string;
+
+	@ApiProperty()
+	@CreateDateColumn({
+		name: 'created_at'
+	})
+	createdAt: Date;
+
+	@ApiProperty()
 	@RelationId((post: Post) => post.user)
 	userId!: string;
 
@@ -31,17 +46,11 @@ export default class Post {
 	})
 	user!: User;
 
-	@RelationId((post: Post) => post.category)
-	categoryIdx!: number;
-
-	@JoinColumn({ name: 'fk_category_idx' })
-	@ManyToOne(() => Category, {
-		onDelete: 'CASCADE',
-		onUpdate: 'CASCADE',
-	})
-	category!: Category;
-
 	@ApiProperty()
 	@OneToMany(() => Comment, (comment) => comment.post)
 	comment!: Comment[];
+
+	@ApiProperty()
+	@OneToMany(() => PostLike, (postLike) => postLike.post)
+	postLike!: PostLike[];
 }
