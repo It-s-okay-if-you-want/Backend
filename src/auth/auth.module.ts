@@ -8,6 +8,7 @@ import { TokenService } from 'src/token/token.service';
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
   providers: [AuthService, TokenService],
-  controllers: [AuthController]
+  controllers: [AuthController],
+  exports: [AuthModule]
 })
 export class AuthModule { }

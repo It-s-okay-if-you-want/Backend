@@ -2,7 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from "typeorm";
 import User from "./User";
 import Comment from "./Comment";
-import Category from "./Category";
 
 @Entity('post')
 export default class Post {
@@ -21,6 +20,9 @@ export default class Post {
 	})
 	image?: string;
 
+	@Column()
+	category!: string;
+
 	@RelationId((post: Post) => post.user)
 	userId!: string;
 
@@ -30,16 +32,6 @@ export default class Post {
 		onUpdate: 'CASCADE',
 	})
 	user!: User;
-
-	@RelationId((post: Post) => post.category)
-	categoryIdx!: number;
-
-	@JoinColumn({ name: 'fk_category_idx' })
-	@ManyToOne(() => Category, {
-		onDelete: 'CASCADE',
-		onUpdate: 'CASCADE',
-	})
-	category!: Category;
 
 	@ApiProperty()
 	@OneToMany(() => Comment, (comment) => comment.post)

@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import User from 'src/entities/User';
 import { TokenService } from 'src/token/token.service';
@@ -59,5 +59,17 @@ export class AuthService {
 
 		this.authRepo.merge(userData, userEditDto);
 		await this.authRepo.save(userData);
+	}
+
+	public async getUserById(id: string): Promise<User> {
+		const user: User | undefined = await this.authRepo.findOne({
+			id: id,
+		});
+
+		if (user === undefined) {
+			throw new NotFoundException('존재하지 않는 유저');
+		};
+
+		return user;
 	}
 }
