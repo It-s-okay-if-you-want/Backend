@@ -35,11 +35,12 @@ export class PostController {
 		return new GetPostsResponse(200, "최신순 정렬", posts);
 	}
 
+	@UseGuards(AuthGuard)
 	@Get('/hot')
 	@HttpCode(200)
 	@ApiOkResponse({ type: BaseResponse })
-	async getHotPost() {
-		const posts: PostEntity[] = await this.postService.getHotPost();
+	async getHotPost(@Token() user: User) {
+		const posts: PostEntity[] = await this.postService.getHotPost(user);
 
 		return new GetPostsResponse(200, "인기순 정렬", posts);
 	}

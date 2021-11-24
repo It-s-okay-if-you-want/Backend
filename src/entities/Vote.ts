@@ -6,9 +6,11 @@ import User from "./User";
 @Entity('vote')
 export default class Vote {
 
+	@ApiProperty()
 	@PrimaryGeneratedColumn()
 	idx!: number;
 
+	@ApiProperty()
 	@RelationId((vote: Vote) => vote.post)
 	postIdx!: number;
 
@@ -19,6 +21,7 @@ export default class Vote {
 	})
 	post!: Post;
 
+	@ApiProperty()
 	@RelationId((vote: Vote) => vote.user)
 	userId!: string;
 

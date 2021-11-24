@@ -10,6 +10,6 @@ export class GetPostResponse extends BaseResponse<Post> {
 
 export class GetPostsResponse extends BaseResponse<Post[]> {
 
-	@ApiProperty()
+	@ApiProperty({ type: () => [Post] })
 	data: Post[];
 }
