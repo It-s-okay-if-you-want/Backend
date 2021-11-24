@@ -34,7 +34,7 @@ export class TokenService {
 		return sign(payload, JWT_SECRET, option);
 	}
 
-	private async verifyToken(token: string) {
+	public async verifyToken(token: string) {
 		return verify(token, JWT_SECRET);
 	}
 
