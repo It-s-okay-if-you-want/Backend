@@ -14,25 +14,14 @@ export default class CatchException implements ExceptionFilter {
     const ctx: HttpArgumentsHost = host.switchToHttp();
     const response: Response = ctx.getResponse();
 
-    let httpError = null;
-
     Logger.warn(exception);
     if (exception instanceof HttpException) {
-      httpError = {
-        status: exception.getStatus(),
-        message: exception.message,
-      };
+      return response.status(exception.getStatus()).json(exception.getResponse());
     } else {
-      httpError = {
+      return response.status(500).json({
         status: 500,
-        message: '서버 오류.',
-      };
+        message: '서버 오류'
+      });
     }
-
-    const { status, message } = httpError;
-    return response.status(status).json({
-      status,
-      message,
-    });
   }
 }
