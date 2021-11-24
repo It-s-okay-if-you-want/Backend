@@ -13,7 +13,7 @@ export default class PostLike {
 	postIdx!: number;
 
 	@JoinColumn({ name: 'fk_post_idx' })
-	@ManyToOne(() => PostLike, {
+	@ManyToOne(() => Post, {
 		onDelete: 'CASCADE',
 		onUpdate: 'CASCADE',
 	})
@@ -23,7 +23,7 @@ export default class PostLike {
 	userId!: string;
 
 	@JoinColumn({ name: 'fk_user_id' })
-	@ManyToOne(() => PostLike, {
+	@ManyToOne(() => User, {
 		onDelete: 'CASCADE',
 		onUpdate: 'CASCADE'
 	})

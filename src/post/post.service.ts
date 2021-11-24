@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/auth.service';
 import Post from 'src/entities/Post';
@@ -26,5 +26,40 @@ export class PostService {
 		newPost.user = userData;
 		newPost.category = CheckCategory(postDto.category);
 		await this.postRepo.save(newPost);
+	}
+
+	public async getPost(idx: number): Promise<Post> {
+		const post: Post | undefined = await this.postRepo.findOne({
+			where: {
+				idx: idx
+			},
+			relations: ['postLike']
+		});
+
+		if (post === undefined) {
+			throw new NotFoundException('존재하지 않는 게시물');
+		}
+
+		return post;
+	}
+
+	public async getNewPost(user: User): Promise<Post[]> {
+		const userData: User = await this.userService.getUserById(user.id);
+
+		const posts: Post[] = await this.postRepo.createQueryBuilder('post')
+			.leftJoin('post.user', 'user')
+			.leftJoinAndSelect('post.postLike', 'like')
+			.where('user.local = :local', { local: userData.local })
+			.orderBy('post.created_at', 'DESC')
+			.getMany();
+
+		return posts;
+	}
+
+	public async getHotPost(): Promise<Post[]> {
+		return this.postRepo.createQueryBuilder('post')
+			.leftJoinAndSelect('post.postLike', 'postlike')
+			.orderBy('COUNT(postlike)', 'DESC')
+			.getMany();
 	}
 }
