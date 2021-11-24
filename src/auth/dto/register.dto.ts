@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Column } from 'typeorm';
 
 export default class RegisterDto {
 
@@ -20,7 +19,7 @@ export default class RegisterDto {
 	nick!: string;
 
 	@ApiProperty({ required: true })
-	@Column()
+	@IsNotEmpty()
 	@IsString()
-	local: string;
+	local!: string;
 }
