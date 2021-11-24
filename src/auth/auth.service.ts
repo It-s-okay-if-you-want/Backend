@@ -63,7 +63,10 @@ export class AuthService {
 
 	public async getUserById(id: string): Promise<User> {
 		const user: User | undefined = await this.authRepo.findOne({
-			id: id,
+			where: {
+				id: id,
+			},
+			relations: ['post']
 		});
 
 		if (user === undefined) {

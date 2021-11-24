@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Token } from 'src/decorator/token.decorator';
 import User from 'src/entities/User';
@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 import LoginDto from './dto/login.dto';
 import RegisterDto from './dto/register.dto';
 import UserEditDto from './dto/userEdit.dto';
-import LoginResponse from './response/LoginResponse';
+import LoginResponse, { MyResponse } from './response/LoginResponse';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -44,5 +44,16 @@ export class AuthController {
 		await this.authService.userEdit(userEditDto, user);
 
 		return new BaseResponse(200, "유저 정보 수정 성공");
+	}
+
+	@UseGuards(AuthGuard)
+	@Get('/')
+	@HttpCode(200)
+	@ApiOkResponse({ type: MyResponse })
+	@ApiBasicAuth()
+	async My(@Token() user: User) {
+		const data: User = await this.authService.getUserById(user.id);
+
+		return new MyResponse(200, "프로필 조회 성공", data);
 	}
 }

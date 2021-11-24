@@ -23,6 +23,7 @@ export default class User {
 	@Column()
 	local: string;
 
+	@ApiProperty({ type: () => [Post] })
 	@OneToMany(() => Post, (post) => post.user)
 	post!: Post[];
 

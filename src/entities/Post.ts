@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from "typeorm";
 import User from "./User";
 import Comment from "./Comment";
+import PostLike from "./PostLike";
 
 @Entity('post')
 export default class Post {
@@ -52,7 +53,11 @@ export default class Post {
 	})
 	user!: User;
 
-	@ApiProperty()
+	@ApiProperty({ type: () => [Comment] })
 	@OneToMany(() => Comment, (comment) => comment.post)
 	comment!: Comment[];
+
+	@ApiProperty({ type: () => [PostLike] })
+	@OneToMany(() => PostLike, (postLike) => postLike.post)
+	postLikes!: PostLike[];
 }

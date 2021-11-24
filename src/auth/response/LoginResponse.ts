@@ -19,3 +19,9 @@ export default class LoginResponse extends BaseResponse<Login> {
 	@ApiProperty()
 	data: Login;
 }
+
+export class MyResponse extends BaseResponse<User>{
+
+	@ApiProperty()
+	data: User;
+}
