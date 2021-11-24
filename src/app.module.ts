@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { APP_FILTER } from '@nestjs/core';
+import CatchException from './interceptor/error.interceptor';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { config } from './config/ormConfig';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [TypeOrmModule.forRoot(config), AuthModule],
+  controllers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: CatchException,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule { }
