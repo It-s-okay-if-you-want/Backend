@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
 import Post from "./Post";
 import User from "./User";
 
@@ -31,4 +31,8 @@ export default class PostVote {
 		onUpdate: 'CASCADE'
 	})
 	user!: User;
+
+	@ApiProperty()
+	@Column()
+	agree!: boolean;
 }

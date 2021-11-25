@@ -47,23 +47,6 @@ export class ReportService {
 		postReport.post = postData;
 
 		await this.postReportRepo.save(postReport);
-
-		const reportList: PostReport[] = await this.postReportRepo.find({
-			where: {
-				post: postData
-			}
-		});
-
-		if (reportList.length >= 10) {
-			const banUser: User = await this.userService.getUserById(postReport.post.userId);
-
-			const ban: Ban = this.banRepo.create({
-				user: banUser,
-				startDate: day().format('YYYY-MM-DD'),
-				endDate: day().add(7, 'day').format('YYYY-MM-DD'),
-			});
-			await this.banRepo.save(ban);
-		}
 	}
 
 	public async deletePostReport(user: User, idx: number) {
