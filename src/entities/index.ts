@@ -1,9 +1,11 @@
 import Ban from "./Ban";
 import Comment from "./Comment";
+import CommentReport from "./CommentReport";
 import Post from "./Post";
 import PostLike from "./PostLike";
-import Report from "./Report";
+import PostReport from "./PostReport";
 import User from "./User";
-import Vote from "./Vote";
+import PostVote from "./PostVote";
+import CommentVote from "./CommentVote";
 
-export default [Comment, Post, Report, User, Vote, PostLike, Ban];
+export default [Comment, Post, PostReport, CommentReport, User, PostVote, PostLike, Ban, CommentVote];

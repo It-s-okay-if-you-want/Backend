@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 import Comment from "./Comment";
 import Post from "./Post";
 import PostLike from "./PostLike";
-import Report from "./Report";
+import PostReport from "./PostReport";
 
 @Entity('user')
 export default class User {
@@ -31,8 +31,8 @@ export default class User {
 	@OneToMany(() => Comment, (comment) => comment.user)
 	comment!: Comment[];
 
-	@OneToMany(() => Report, (report) => report.user)
-	report: Report[];
+	@OneToMany(() => PostReport, (postReport) => postReport.user)
+	postReport: PostReport[];
 
 	@ApiProperty({ type: () => [PostLike] })
 	@OneToMany(() => PostLike, (postLike) => postLike.user)

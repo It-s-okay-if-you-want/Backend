@@ -7,9 +7,10 @@ import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
 import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule],
+  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule, ReportModule],
   controllers: [],
   providers: [
     {
