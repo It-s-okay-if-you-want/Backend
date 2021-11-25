@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import Group from "./Group";
 import Post from "./Post";
 import User from "./User";
 
@@ -30,6 +31,17 @@ export default class Comment {
 		onUpdate: 'CASCADE',
 	})
 	post!: Post;
+
+	@ApiProperty()
+	@RelationId((commnet: Comment) => commnet.group)
+	groupIdx!: number;
+
+	@JoinColumn({ name: 'fk_group_idx' })
+	@ManyToOne(() => Group, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	group!: Group;
 
 	@ApiProperty()
 	@RelationId((comment: Comment) => comment.user)

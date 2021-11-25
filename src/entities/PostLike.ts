@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import Group from "./Group";
 import Post from "./Post";
 import User from "./User";
 
@@ -20,6 +21,17 @@ export default class PostLike {
 		onUpdate: 'CASCADE',
 	})
 	post!: Post;
+
+	@ApiProperty()
+	@RelationId((postLike: PostLike) => postLike.group)
+	groupIdx!: number;
+
+	@JoinColumn({ name: 'fk_group_idx' })
+	@ManyToOne(() => Group, {
+		onDelete: 'CASCADE',
+		onUpdate: 'CASCADE',
+	})
+	group: Group;
 
 	@ApiProperty()
 	@RelationId((postLike: PostLike) => postLike.user)

@@ -7,5 +7,6 @@ import PostReport from "./PostReport";
 import User from "./User";
 import PostVote from "./PostVote";
 import CommentVote from "./CommentVote";
+import Group from "./Group";
 
-export default [Comment, Post, PostReport, CommentReport, User, PostVote, PostLike, Ban, CommentVote];
+export default [Comment, Post, PostReport, CommentReport, User, PostVote, PostLike, Ban, CommentVote, Group];
