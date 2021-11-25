@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import CommentReport from "./CommentReport";
 import Post from "./Post";
 import User from "./User";
 
@@ -41,4 +42,8 @@ export default class Comment {
 		onUpdate: 'CASCADE'
 	})
 	user!: User;
+
+	@ApiProperty({ type: () => [CommentReport] })
+	@OneToMany(() => CommentReport, (commentReport) => commentReport.comment)
+	commentReport: CommentReport[];
 }
