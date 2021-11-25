@@ -12,10 +12,10 @@ services:
     environment:
       PORT: ${PORT}
 
-      MYSQL_DATABASE: ${DB_DB}
-      MYSQL_HOST: ${DB_HOST}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PORT: ${DB_PORT}
+      DB_DB: ${DB_DB}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PORT: ${DB_PORT}
 
       JWT_SECRET: ${JWT_SECRET}
     
