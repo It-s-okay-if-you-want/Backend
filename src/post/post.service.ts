@@ -144,6 +144,7 @@ export class PostService {
 			.leftJoin('post.user', 'user')
 			.where('user.local = :local', { local: userData.local })
 			.andWhere('post.category = :checkCategory', { checkCategory })
+			.orderBy('created_at', 'DESC')
 			.getMany();
 
 		return posts;
