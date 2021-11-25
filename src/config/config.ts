@@ -11,3 +11,7 @@ export const dbConfig = {
 	database: process.env.DB_DB,
 	port: parseInt(process.env.DB_PORT),
 };
+
+export const ENDPOINT = {
+	SERVER: 'localhost',
+}
