@@ -4,6 +4,7 @@ import * as dayjs from 'dayjs';
 import { AuthService } from 'src/auth/auth.service';
 import { CommentService } from 'src/comment/comment.service';
 import Ban from 'src/entities/Ban';
+import Comment from 'src/entities/Comment';
 import CommentVote from 'src/entities/CommentVote';
 import Post from 'src/entities/Post';
 import PostVote from 'src/entities/PostVote';
@@ -18,7 +19,7 @@ export class VoteService {
     @InjectRepository(PostVote)
     private postVoteRepository: Repository<PostVote>,
     @InjectRepository(CommentVote)
-    private commentReportRepository: Repository<CommentVote>,
+    private commentVoteRepository: Repository<CommentVote>,
     private userService: AuthService,
     private postService: PostService,
     private groupService: GroupService,
@@ -45,7 +46,7 @@ export class VoteService {
       }
     });
 
-    if (voteList.length <= 10) {
+    if (voteList.length < 10) {
       await this.postVoteRepository.save(vote);
     }
 
@@ -67,6 +68,50 @@ export class VoteService {
         startDate: dayjs().format('YYYY-MM-DD'),
         endDate: dayjs().add(7, 'day').format('YYYY-MM-DD'),
       });
+      await this.banRepository.save(ban);
+    }
+  }
+
+  public async addCommentVote(idx: number, user: User, agree: boolean): Promise<void> {
+    const userData: User = await this.userService.getUserById(user.id);
+
+    const commentData: Comment = await this.commentService.getComment(idx);
+
+    const vote: CommentVote = this.commentVoteRepository.create({
+      user: userData,
+      comment: commentData,
+      agree: agree,
+    });
+
+    const voteList: CommentVote[] = await this.commentVoteRepository.find({
+      where: {
+        comment: commentData,
+      },
+    });
+
+    if (voteList.length < 10) {
+      await this.commentVoteRepository.save(vote);
+    }
+
+    if (voteList.length >= 10) {
+      const banUser: User = await this.userService.getUserById(commentData.userId);
+
+      const isBan: Ban = await this.banRepository.findOne({
+        where: {
+          user: banUser,
+        },
+      });
+
+      if (isBan !== undefined) {
+        throw new BadRequestException('이미 제재된 유저입니다');
+      }
+
+      const ban: Ban = this.banRepository.create({
+        user: banUser,
+        startDate: dayjs().format('YYYY-MM-DD'),
+        endDate: dayjs().add(7, 'day').format('YYYY-MM-DD'),
+      });
+
       await this.banRepository.save(ban);
     }
   }
