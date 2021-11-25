@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 import Comment from "./Comment";
+import Group from "./Group";
 import Post from "./Post";
 import PostLike from "./PostLike";
 import PostReport from "./PostReport";
@@ -37,4 +38,8 @@ export default class User {
 	@ApiProperty({ type: () => [PostLike] })
 	@OneToMany(() => PostLike, (postLike) => postLike.user)
 	postLikes!: PostLike[];
+
+	@ApiProperty({ type: () => [Group] })
+	@OneToMany(() => Group, (group) => group.user)
+	group!: Group[];
 }
