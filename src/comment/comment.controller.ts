@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiBasicAuth, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Token } from 'src/decorator/token.decorator';
 import User from 'src/entities/User';
 import { AuthGuard } from 'src/guard/AuthGuard';
@@ -7,6 +7,7 @@ import BaseResponse from 'src/lib/BaseResponse';
 import { CommentService } from './comment.service';
 import AddCommentDto from './dto/addComment.dto';
 
+@ApiTags('comment')
 @Controller('comment')
 export class CommentController {
 	constructor(

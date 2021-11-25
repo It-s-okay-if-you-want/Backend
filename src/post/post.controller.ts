@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { ApiBasicAuth, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Token } from 'src/decorator/token.decorator';
 import PostEntity from 'src/entities/Post';
 import User from 'src/entities/User';
@@ -10,6 +10,7 @@ import UpdatePostDto from './dto/update.dto';
 import { PostService } from './post.service';
 import { GetPostResponse, GetPostsResponse } from './response/PostResponse';
 
+@ApiTags('post')
 @Controller('post')
 export class PostController {
 	constructor(
