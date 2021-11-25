@@ -9,7 +9,6 @@ import { TokenService } from 'src/token/token.service';
 import { PostService } from 'src/post/post.service';
 import Post from 'src/entities/Post';
 import PostLike from 'src/entities/PostLike';
-import PostVote from 'src/entities/PostVote';
 import CommentVote from 'src/entities/CommentVote';
 import Ban from 'src/entities/Ban';
 
