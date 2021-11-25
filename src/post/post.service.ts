@@ -25,11 +25,12 @@ export class PostService {
 	public async createPost(postDto: CreatePostDto, user: User) {
 		const userData: User = await this.userService.getUserById(user.id);
 
-		const isBan: Ban[] = await this.banRepo.createQueryBuilder()
-			.where('end_date >= :date', { date: new Date() })
-			.getMany();
+		const isBan: Ban | undefined = await this.banRepo.createQueryBuilder()
+			.where('fk_user_id = :userId', { userId: userData.id })
+			.andWhere('end_date >= :date', { date: new Date() })
+			.getOne();
 
-		if (isBan.length > 0) {
+		if (isBan !== undefined) {
 			const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]*$/;
 
 			if (regex.test(postDto.content)) {
