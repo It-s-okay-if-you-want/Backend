@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
 import Post from "./Post";
 import User from "./User";
 import Comment from "./Comment";
@@ -21,6 +21,9 @@ export default class CommentVote {
 		onUpdate: 'CASCADE',
 	})
 	comment!: Comment;
+
+	@Column()
+	agree!: boolean;
 
 	@ApiProperty()
 	@RelationId((commentVote: CommentVote) => commentVote.user)
