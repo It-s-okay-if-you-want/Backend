@@ -9,7 +9,7 @@ export const dbConfig = {
 	username: process.env.DATABASE_USERNAME,
 	password: process.env.DATABASE_PASSWORD,
 	database: process.env.DATABASE_DATABASE,
-	port: parseInt(process.env.DATABASE_POR),
+	port: parseInt(process.env.DATABASE_PORT),
 };
 
 export const ENDPOINT = {
