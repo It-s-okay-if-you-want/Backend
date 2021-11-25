@@ -3,6 +3,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, Pri
 import User from "./User";
 import Comment from "./Comment";
 import PostLike from "./PostLike";
+import Report from "./PostReport";
 
 @Entity('post')
 export default class Post {
@@ -60,4 +61,8 @@ export default class Post {
 	@ApiProperty({ type: () => [PostLike] })
 	@OneToMany(() => PostLike, (postLike) => postLike.post)
 	postLikes!: PostLike[];
+
+	@ApiProperty({ type: () => [Report] })
+	@OneToMany(() => Report, (postLike) => postLike.post)
+	postReport: Report[];
 }
