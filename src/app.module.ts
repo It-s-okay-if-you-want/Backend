@@ -7,15 +7,13 @@ import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
 import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
-import { GroupController } from './group/group.controller';
-import { GroupService } from './group/group.service';
 import { GroupModule } from './group/group.module';
-import { UploadController } from './upload/upload.controller';
 import { UploadModule } from './upload/upload.module';
 import { VoteModule } from './vote/vote.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule, GroupModule, UploadModule, VoteModule],
+  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule, GroupModule, UploadModule, VoteModule, ReportModule],
   controllers: [],
   providers: [
     {
