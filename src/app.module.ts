@@ -10,16 +10,17 @@ import { CommentModule } from './comment/comment.module';
 import { GroupController } from './group/group.controller';
 import { GroupService } from './group/group.service';
 import { GroupModule } from './group/group.module';
+import { UploadController } from './upload/upload.controller';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule, GroupModule],
-  controllers: [GroupController],
+  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule, GroupModule, UploadModule],
+  controllers: [],
   providers: [
     {
       provide: APP_FILTER,
       useClass: CatchException,
     },
-    GroupService,
   ],
 })
 export class AppModule { }
