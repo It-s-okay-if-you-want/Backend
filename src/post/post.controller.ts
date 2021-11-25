@@ -90,4 +90,15 @@ export class PostController {
 
 		return new GetPostsResponse(200, '카테고리별 글 조회 성공', posts);
 	}
+
+	@UseGuards(AuthGuard)
+	@Post('/like/:idx')
+	@HttpCode(200)
+	@ApiOkResponse({ type: BaseResponse })
+	@ApiBasicAuth()
+	async addLike(@Token() user: User, @Param('idx') idx: number) {
+		await this.postService.addLike(user, idx);
+
+		return new BaseResponse(200, '좋아요');
+	}
 }
