@@ -10,6 +10,7 @@ import Comment from 'src/entities/Comment';
 import { PostService } from 'src/post/post.service';
 import { Repository } from 'typeorm';
 import Ban from 'src/entities/Ban';
+import * as day from 'dayjs';
 
 @Injectable()
 export class ReportService {
@@ -54,10 +55,12 @@ export class ReportService {
 		});
 
 		if (reportList.length >= 10) {
-			const banUser: User = await this.userService.getUserById(postReport.post.user.id);
+			const banUser: User = await this.userService.getUserById(postReport.post.userId);
 
 			const ban: Ban = this.banRepo.create({
-				user: banUser
+				user: banUser,
+				startDate: day().format('YYYY-MM-DD'),
+				endDate: day().add(7, 'day').format('YYYY-MM-DD'),
 			});
 			await this.banRepo.save(ban);
 		}
@@ -114,7 +117,9 @@ export class ReportService {
 			const banUser: User = await this.userService.getUserById(commentReport.comment.user.id);
 
 			const ban: Ban = this.banRepo.create({
-				user: banUser
+				user: banUser,
+				startDate: day().format('YYYY-MM-DD'),
+				endDate: day().add(7, 'day').format('YYYY-MM-DD')
 			});
 			await this.banRepo.save(ban);
 		}
