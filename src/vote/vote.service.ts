@@ -1,5 +1,6 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as dayjs from 'dayjs';
 import { AuthService } from 'src/auth/auth.service';
 import { CommentService } from 'src/comment/comment.service';
 import Ban from 'src/entities/Ban';
@@ -31,23 +32,42 @@ export class VoteService {
 
     const postData: Post = await this.postService.getPost(idx);
 
-    const reportList: PostVote[] = await this.postVoteRepository.find({
+    const vote: PostVote = this.postVoteRepository.create({
+      user: userData,
+      post: postData,
+      agree: agree
+    });
+
+
+    const voteList: PostVote[] = await this.postVoteRepository.find({
       where: {
         post: postData
       }
     });
 
-    if (reportList.length >= 10) {
-      const vote: PostVote = this.postVoteRepository.create({
-        user: userData,
-        post: postData,
-        agree: agree
-      });
+    if (voteList.length <= 10) {
       await this.postVoteRepository.save(vote);
+    }
+
+    if (voteList.length >= 10) {
+      const banUser: User = await this.userService.getUserById(postData.userId);
+
+      const isBan: Ban = await this.banRepository.findOne({
+        where: {
+          user: banUser
+        }
+      });
+
+      if (isBan !== undefined) {
+        throw new BadRequestException('이미 제재된 유저입니다');
+      }
+
+      const ban: Ban = this.banRepository.create({
+        user: banUser,
+        startDate: dayjs().format('YYYY-MM-DD'),
+        endDate: dayjs().add(7, 'day').format('YYYY-MM-DD'),
+      });
+      await this.banRepository.save(ban);
     }
   }
 }
-
-
-
-
