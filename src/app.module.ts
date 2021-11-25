@@ -12,9 +12,10 @@ import { GroupService } from './group/group.service';
 import { GroupModule } from './group/group.module';
 import { UploadController } from './upload/upload.controller';
 import { UploadModule } from './upload/upload.module';
+import { VoteModule } from './vote/vote.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule, GroupModule, UploadModule],
+  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule, GroupModule, UploadModule, VoteModule],
   controllers: [],
   providers: [
     {
