@@ -49,12 +49,13 @@ export class PostService {
 	}
 
 	public async getPost(idx: number): Promise<Post> {
-		const post: Post | undefined = await this.postRepo.findOne({
-			where: {
-				idx: idx
-			},
-			relations: ['postLikes', 'comment']
-		});
+		const post: Post | undefined = await this.postRepo.createQueryBuilder('post')
+			.where('post.idx = :idx', { idx })
+			.leftJoinAndSelect('post.postLikes', 'postLikes')
+			.leftJoinAndSelect('post.postReport', 'postReport')
+			.leftJoinAndSelect('post.comment', 'comment')
+			.leftJoinAndSelect('post.postVote', 'postVote')
+			.getOne();
 
 		if (post === undefined) {
 			throw new NotFoundException('존재하지 않는 게시물');
@@ -70,7 +71,6 @@ export class PostService {
 			.leftJoin('post.user', 'user')
 			.leftJoinAndSelect('post.comment', 'comment')
 			.leftJoinAndSelect('post.postReport', 'postReport')
-			.leftJoinAndSelect('comment.commentReport', 'commentReport')
 			.leftJoinAndSelect('post.postLikes', 'likes')
 			.where('user.local = :local', { local: userData.local })
 			.orderBy('post.created_at', 'DESC')

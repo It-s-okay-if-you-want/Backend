@@ -4,6 +4,7 @@ import User from "./User";
 import Comment from "./Comment";
 import PostLike from "./PostLike";
 import Report from "./PostReport";
+import PostVote from "./PostVote";
 
 @Entity('post')
 export default class Post {
@@ -63,6 +64,10 @@ export default class Post {
 	postLikes!: PostLike[];
 
 	@ApiProperty({ type: () => [Report] })
-	@OneToMany(() => Report, (postLike) => postLike.post)
+	@OneToMany(() => Report, (postReport) => postReport.post)
 	postReport: Report[];
+
+	@ApiProperty({ type: () => [PostVote] })
+	@OneToMany(() => PostVote, (postVote) => postVote.post)
+	postVote!: PostVote[];
 }
