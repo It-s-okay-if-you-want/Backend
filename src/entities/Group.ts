@@ -19,7 +19,10 @@ export default class Group {
   content!: string;
 
   @ApiProperty()
-  @Column({ name: 'category' })
+  @Column({
+    name: 'category',
+    default: '같이해요'
+  })
   category!: string;
 
   @ApiProperty()
@@ -44,7 +47,7 @@ export default class Group {
   postLike!: number;
 
   @ApiProperty()
-  @CreateDateColumn({ name: 'create_at' })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
   @ApiProperty()
@@ -63,6 +66,6 @@ export default class Group {
   comment!: Comment[];
 
   @ApiProperty({ type: () => [PostLike] })
-  @OneToMany(() => PostLike, (postLike) => postLike.post)
+  @OneToMany(() => PostLike, (postLike) => postLike.group)
   postLikes!: PostLike[];
 }
