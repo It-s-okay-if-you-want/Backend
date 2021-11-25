@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import User from "src/entities/User";
 import BaseResponse from "src/lib/BaseResponse";
-// import { Login } from "src/types/types";
 
 export class Login {
 	@ApiProperty()

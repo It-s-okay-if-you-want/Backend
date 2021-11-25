@@ -17,8 +17,6 @@ export class CommentService {
 		private commentRepo: Repository<Comment>,
 		private userService: AuthService,
 		private postService: PostService,
-		@InjectRepository(CommentVote)
-		private voteRepo: Repository<CommentVote>,
 		@InjectRepository(Ban)
 		private banRepo: Repository<Ban>
 	) { }
