@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/auth.service';
 import Post from 'src/entities/Post';
+import PostLike from 'src/entities/PostLike';
 import User from 'src/entities/User';
 import { CheckCategory } from 'src/lib/CheckCategory';
 import { Repository } from 'typeorm';
@@ -14,6 +15,8 @@ export class PostService {
 		@InjectRepository(Post)
 		private postRepo: Repository<Post>,
 		private userService: AuthService,
+		@InjectRepository(PostLike)
+		private likeRepo: Repository<PostLike>
 	) { }
 
 	public async createPost(postDto: CreatePostDto, user: User) {
@@ -33,7 +36,8 @@ export class PostService {
 		const post: Post | undefined = await this.postRepo.findOne({
 			where: {
 				idx: idx
-			}
+			},
+			relations: ['postLikes', 'comment']
 		});
 
 		if (post === undefined) {
@@ -48,6 +52,8 @@ export class PostService {
 
 		const posts: Post[] = await this.postRepo.createQueryBuilder('post')
 			.leftJoin('post.user', 'user')
+			.leftJoinAndSelect('post.comment', 'comment')
+			.leftJoinAndSelect('post.postLikes', 'likes')
 			.where('user.local = :local', { local: userData.local })
 			.orderBy('post.created_at', 'DESC')
 			.getMany();
@@ -60,9 +66,11 @@ export class PostService {
 
 		return this.postRepo.createQueryBuilder('post')
 			.leftJoin('post.user', 'user')
+			.leftJoinAndSelect('post.comment', 'comment')
+			.leftJoinAndSelect('post.postLikes', 'likes')
 			.where('user.local = :local', { local: userData.local })
 			.orderBy('post_like', 'DESC')
-			.getRawMany();
+			.getMany();
 	}
 
 	public async deletePost(idx: number, user: User): Promise<void> {
@@ -119,5 +127,34 @@ export class PostService {
 			.getMany();
 
 		return posts;
+	}
+
+	public async addLike(user: User, idx: number): Promise<void> {
+		const userData: User = await this.userService.getUserById(user.id);
+
+		const post: Post | undefined = await this.postRepo.findOne({
+			idx: idx
+		});
+
+		if (post === undefined) {
+			throw new NotFoundException('존재하지 않는 게시글');
+		}
+
+		const like: PostLike | undefined = await this.likeRepo.findOne({
+			post: post,
+			user: userData
+		});
+
+		if (like !== undefined) {
+			throw new UnauthorizedException('이미 좋아요를 눌렀습니다');
+		}
+
+		const newLike: PostLike = this.likeRepo.create();
+		newLike.post = post;
+		newLike.user = userData;
+		await this.likeRepo.save(newLike);
+
+		post.postLike += 1;
+		await this.postRepo.save(post);
 	}
 }
