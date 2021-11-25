@@ -3,15 +3,15 @@ import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } fro
 import Post from "./Post";
 import User from "./User";
 
-@Entity('vote')
-export default class Vote {
+@Entity('post_vote')
+export default class PostVote {
 
 	@ApiProperty()
 	@PrimaryGeneratedColumn()
 	idx!: number;
 
 	@ApiProperty()
-	@RelationId((vote: Vote) => vote.post)
+	@RelationId((postVote: PostVote) => postVote.post)
 	postIdx!: number;
 
 	@JoinColumn({ name: 'fk_post_idx' })
@@ -22,7 +22,7 @@ export default class Vote {
 	post!: Post;
 
 	@ApiProperty()
-	@RelationId((vote: Vote) => vote.user)
+	@RelationId((postVote: PostVote) => postVote.post)
 	userId!: string;
 
 	@JoinColumn({ name: 'fk_user_id' })

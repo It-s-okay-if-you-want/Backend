@@ -3,7 +3,7 @@ import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId } fro
 import Post from "./Post";
 import User from "./User";
 
-@Entity('report')
+@Entity('post_report')
 export default class Report {
 
 	@ApiProperty()

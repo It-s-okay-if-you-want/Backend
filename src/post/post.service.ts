@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/auth.service';
+import Ban from 'src/entities/Ban';
 import Post from 'src/entities/Post';
 import PostLike from 'src/entities/PostLike';
 import User from 'src/entities/User';
@@ -16,11 +17,25 @@ export class PostService {
 		private postRepo: Repository<Post>,
 		private userService: AuthService,
 		@InjectRepository(PostLike)
-		private likeRepo: Repository<PostLike>
+		private likeRepo: Repository<PostLike>,
+		@InjectRepository(Ban)
+		private banRepo: Repository<Ban>,
 	) { }
 
 	public async createPost(postDto: CreatePostDto, user: User) {
 		const userData: User = await this.userService.getUserById(user.id);
+
+		const isBan: Ban[] = await this.banRepo.createQueryBuilder()
+			.where('end_date >= :date', { date: new Date() })
+			.getMany();
+
+		if (isBan.length > 0) {
+			const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]*$/;
+
+			if (regex.test(postDto.content)) {
+				throw new BadRequestException('이모티콘만 사용할 수 있습니다');
+			}
+		}
 
 		const newPost: Post = this.postRepo.create({
 			title: postDto.title,
