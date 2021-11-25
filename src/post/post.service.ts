@@ -36,7 +36,8 @@ export class PostService {
 		const post: Post | undefined = await this.postRepo.findOne({
 			where: {
 				idx: idx
-			}
+			},
+			relations: ['postLikes', 'comment']
 		});
 
 		if (post === undefined) {
@@ -51,6 +52,8 @@ export class PostService {
 
 		const posts: Post[] = await this.postRepo.createQueryBuilder('post')
 			.leftJoin('post.user', 'user')
+			.leftJoinAndSelect('post.comment', 'comment')
+			.leftJoinAndSelect('post.postLikes', 'likes')
 			.where('user.local = :local', { local: userData.local })
 			.orderBy('post.created_at', 'DESC')
 			.getMany();
@@ -63,9 +66,11 @@ export class PostService {
 
 		return this.postRepo.createQueryBuilder('post')
 			.leftJoin('post.user', 'user')
+			.leftJoinAndSelect('post.comment', 'comment')
+			.leftJoinAndSelect('post.postLikes', 'likes')
 			.where('user.local = :local', { local: userData.local })
 			.orderBy('post_like', 'DESC')
-			.getRawMany();
+			.getMany();
 	}
 
 	public async deletePost(idx: number, user: User): Promise<void> {

@@ -66,7 +66,7 @@ export class AuthService {
 			where: {
 				id: id,
 			},
-			relations: ['post']
+			relations: ['post', 'postLikes']
 		});
 
 		if (user === undefined) {

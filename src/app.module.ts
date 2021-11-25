@@ -6,9 +6,10 @@ import { config } from './config/ormConfig';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
 import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule],
+  imports: [TypeOrmModule.forRoot(config), AuthModule, TokenModule, PostModule, CommentModule],
   controllers: [],
   providers: [
     {

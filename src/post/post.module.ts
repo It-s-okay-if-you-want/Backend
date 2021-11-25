@@ -11,6 +11,7 @@ import PostLike from 'src/entities/PostLike';
 @Module({
   imports: [TypeOrmModule.forFeature([Post, User, PostLike])],
   providers: [PostService, TokenService, AuthService],
-  controllers: [PostController]
+  controllers: [PostController],
+  exports: [PostModule]
 })
 export class PostModule { }
