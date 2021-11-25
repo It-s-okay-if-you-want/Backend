@@ -5,11 +5,11 @@ export const PORT = process.env.PORT;
 export const JWT_SECRET = process.env.JWT_SECRET;
 
 export const dbConfig = {
-	host: process.env.DB_HOST,
-	username: process.env.DB_USER,
-	password: process.env.DB_PW,
-	database: process.env.DB_DB,
-	port: parseInt(process.env.DB_PORT),
+	host: process.env.DATABASE_HOST,
+	username: process.env.DATABASE_USERNAME,
+	password: process.env.DATABASE_PASSWORD,
+	database: process.env.DATABASE_DATABASE,
+	port: parseInt(process.env.DATABASE_POR),
 };
 
 export const ENDPOINT = {
