@@ -1,27 +1,27 @@
-import { Controller, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/lib/multer/multerOption';
-import UploadService from './upload.service';
+import { UploadService } from './upload.service';
 
 @Controller('upload')
 export class UploadController {
-  constructor(
-    private readonly uploadService: UploadService,
-  ) { }
+  constructor(private readonly uploadService: UploadService) { }
 
-  @UseInterceptors(FilesInterceptor('image', null, multerOptions))
-
+  @UseInterceptors(FilesInterceptor('images', null, multerOptions))
   @Post('/')
-  public uploadFiles(
-    @UploadedFiles() file: File[],
-  ) {
-    const UploadedFile: string[] = this.uploadService.uploadFiles(file);
+  public uploadFiles(@UploadedFiles() files: File[]) {
+    const uploadedFiles: string[] = this.uploadService.uploadFiles(files);
 
     return {
       status: 200,
-      message: '파일 업로도를 성공하였습니다.',
+      message: '파일 업로드를 성공하였습니다.',
       data: {
-        file: UploadedFile,
+        files: uploadedFiles,
       },
     };
   }
